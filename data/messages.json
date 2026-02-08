@@ -1,0 +1,89 @@
+[
+  {
+    "id": "MSG1770540119",
+    "from": "CSEDS-SE(1)-(004)",
+    "to": "M001",
+    "text": "hlo",
+    "sender_name": "asdfghjkl",
+    "timestamp": "2026-02-08T14:11:59.089604"
+  },
+  {
+    "id": "MSG1770540165",
+    "from": "M001",
+    "to": "CSEDS-SE(1)-(004)",
+    "text": "hi",
+    "sender_name": "Dr. Rajesh Kumar",
+    "timestamp": "2026-02-08T14:12:45.745342"
+  },
+  {
+    "id": "MSG1770540399",
+    "from": "M001",
+    "to": "CSEDS-SE(1)-(004)",
+    "text": "asdfg",
+    "sender_name": "Dr. Rajesh Kumar",
+    "timestamp": "2026-02-08T14:16:39.131999"
+  },
+  {
+    "id": "MSG1770540615",
+    "from": "M001",
+    "from_role": "mentor",
+    "to": "CSEDS-SE(1)-(004)",
+    "text": "ffbtrt",
+    "sender_name": "Dr. Rajesh Kumar",
+    "timestamp": "2026-02-08T14:20:15.676923"
+  },
+  {
+    "id": "MSG1770540656",
+    "from": "CSEDS-SE(1)-(004)",
+    "from_role": "student",
+    "to": "M001",
+    "text": "qwsdefrgty",
+    "sender_name": "asdfghjkl",
+    "timestamp": "2026-02-08T14:20:56.755699"
+  },
+  {
+    "id": "MSG1770540984",
+    "from": "M001",
+    "from_role": "mentor",
+    "to": "CSEDS-SE(1)-(004)",
+    "text": "1234r",
+    "sender_name": "Dr. Rajesh Kumar",
+    "timestamp": "2026-02-08T14:26:24.920927"
+  },
+  {
+    "id": "MSG1770541439",
+    "from": "CSEDS-SE(2)-(005)",
+    "from_role": "student",
+    "to": "M001",
+    "text": "hlo",
+    "sender_name": "sanskardeep",
+    "timestamp": "2026-02-08T14:33:59.513835"
+  },
+  {
+    "id": "MSG1770541480",
+    "from": "M001",
+    "from_role": "mentor",
+    "to": "CSEDS-SE(2)-(005)",
+    "text": "?",
+    "sender_name": "Dr. Rajesh Kumar",
+    "timestamp": "2026-02-08T14:34:40.682133"
+  },
+  {
+    "id": "MSG1770541500",
+    "from": "M001",
+    "from_role": "mentor",
+    "to": "M001",
+    "text": "hlo",
+    "sender_name": "Dr. Rajesh Kumar",
+    "timestamp": "2026-02-08T14:35:00.590610"
+  },
+  {
+    "id": "MSG1770541504",
+    "from": "M001",
+    "from_role": "mentor",
+    "to": "M001",
+    "text": "jk",
+    "sender_name": "Dr. Rajesh Kumar",
+    "timestamp": "2026-02-08T14:35:04.875228"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "achievement_id": "A001",
+    "student_id": "CSEDS-SE(1)-(001)",
+    "title": "Machine Learning Hackathon Winner",
+    "category": "Hackathon",
+    "level": "College",
+    "date": "2025-12-15",
+    "description": "Developed an ML-based solution for predicting student performance. Ranked 1st among 50 teams.",
+    "certificate_file": ""
+  },
+  {
+    "achievement_id": "A002",
+    "student_id": "CSEDS-SE(2)-(002)",
+    "title": "Data Science Workshop Completion",
+    "category": "Workshop",
+    "level": "College",
+    "date": "2025-11-20",
+    "description": "Completed advanced SQL and Python for data analytics workshop organized by VCET.",
+    "certificate_file": ""
+  },
+  {
+    "achievement_id": "A0003",
+    "student_id": "CSEDS-SE(1)-(004)",
+    "title": "fdtf",
+    "category": "Hackathon",
+    "level": "College",
+    "date": "2015-04-05",
+    "description": "trdfygukhilbjvgfdtfhvb",
+    "certificate_file": "a3b4456a-8fc0-443b-82ba-f4ab547ade49_Screenshot_3.png"
+  }
+]

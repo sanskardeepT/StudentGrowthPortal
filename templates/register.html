@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration - VCET Student Growth Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                    <img src="https://vcet.edu.in/wp-content/uploads/2021/10/WhatsApp-Image-2024-10-21-at-9.32.04-AM.jpeg" alt="VCET Logo" class="auth-logo">
+                <h1>VCET Student Growth Portal</h1>
+                <p class="subtitle">Student Growth Portal</p>
+                <div class="college-info">
+                    <strong>Vidyavardhini's College Of Engineering & Technology</strong>
+                    <div class="hindi">विद्यावर्धिनीचे अभियांत्रिकी आणि तंत्रज्ञान महाविद्यालय</div>
+                    <div class="accreditation">Vasai Road | Approved by AICTE, DTE Maharashtra | Affiliated to University of Mumbai | NBA & NAAC Accredited</div>
+                </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="form-group" enctype="multipart/form-data">
+                <div class="form-field">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@vcet.ac.in">
+                </div>
+
+                <div class="form-field">
+                    <label for="mobile">Mobile Number *</label>
+                    <input type="tel" id="mobile" name="mobile" required placeholder="+91-9876543210" pattern="^\+?91[-\s]?[0-9]{10}$" title="Enter a valid Indian mobile number">
+                </div>
+
+                <div class="form-field">
+                    <label for="mentor_id">Select Your Mentor *</label>
+                    <select id="mentor_id" name="mentor_id" required>
+                        <option value="">-- Choose a Mentor --</option>
+                        {% for mentor in mentors %}
+                            <option value="{{ mentor.mentor_id }}">
+                                {{ mentor.name }} ({{ mentor.email }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="profile_pic">Profile Picture (Optional)</label>
+                    <input type="file" id="profile_pic" name="profile_pic" accept="image/jpeg,image/jpg,image/png,image/gif" placeholder="Upload profile picture">
+                    <small>Formats: JPG, JPEG, PNG, GIF (Max 5MB)</small>
+                </div>
+
+                <div class="form-field">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" required placeholder="At least 6 characters">
+                </div>
+
+                <div class="form-field">
+                    <label for="confirm_password">Confirm Password *</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required placeholder="Re-enter password">
+                </div>
+
+                <p class="department-note">
+                    <strong>Department:</strong> Computer Science & Engineering (Data Science) - CSE-DS
+                </p>
+
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

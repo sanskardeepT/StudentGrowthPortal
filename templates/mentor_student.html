@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - VCET Student Growth Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="https://vcet.edu.in/wp-content/uploads/2021/10/WhatsApp-Image-2024-10-21-at-9.32.04-AM.jpeg" alt="VCET Logo" class="header-logo">
+                <div class="header-title">
+                    <h1>VCET Student Growth Portal</h1>
+                    <p>Vidyavardhini's College | Faculty & Student Portal</p>
+                </div>
+            </div>
+            <div class="header-user">
+                <button id="sidebarToggle" class="sidebar-toggle">☰</button>
+                <span>{{ session.name }}</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-small btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="dashboard">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <a href="{{ url_for('mentor_dashboard') }}" class="btn btn-small btn-info" style="margin-bottom: 20px;">← Back to Dashboard</a>
+
+                <div class="student-profile-card">
+                    {% if student.profile_pic %}
+                        <img src="{{ url_for('download_file', filename=student.profile_pic) }}" alt="{{ student.name }}" class="large-avatar">
+                    {% else %}
+                        <div class="avatar large-avatar">{{ student.name[0] }}</div>
+                    {% endif %}
+                    <h3>{{ student.name }}</h3>
+                    <p>{{ student.email }}</p>
+                    {% if student.mobile %}
+                        <p>📱 <a href="tel:{{ student.mobile }}">{{ student.mobile }}</a></p>
+                    {% endif %}
+                    <p class="meta">ID: {{ student.student_id }}</p>
+                    <p class="meta">Dept: {{ student.department }}</p>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dashboard-main">
+                <div class="page-header">
+                    <h2>{{ student.name }}'s Growth Record</h2>
+                    <p>Review and provide guidance on achievements</p>
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Student Profile Card -->
+                <div class="card student-profile-details">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            {% if student.profile_pic %}
+                                <img src="{{ url_for('download_file', filename=student.profile_pic) }}" alt="{{ student.name }}">
+                            {% else %}
+                                <div class="avatar large-avatar">{{ student.name[0] }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="profile-info">
+                            <h2>{{ student.name }}</h2>
+                            <p class="email">{{ student.email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-details-grid">
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <span class="detail-icon">🆔</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">Student ID</p>
+                                    <p class="detail-value">{{ student.student_id }}</p>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📱</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">Mobile</p>
+                                    <p class="detail-value"><a href="tel:{{ student.mobile }}" style="color: inherit;">{{ student.mobile }}</a></p>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">Batch</p>
+                                    <p class="detail-value">{{ student.batch or 'N/A' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <span class="detail-icon">📖</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">Department</p>
+                                    <p class="detail-value">{{ student.department }}</p>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🎓</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">Branch</p>
+                                    <p class="detail-value">{{ student.branch }}</p>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📑</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">Current Semester</p>
+                                    <p class="detail-value">Sem {{ student.semester }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <span class="detail-icon">📚</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">College</p>
+                                    <p class="detail-value">{{ student.college_name }}</p>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🏫</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">University</p>
+                                    <p class="detail-value">{{ student.university }}</p>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🔗</span>
+                                <div class="detail-content">
+                                    <p class="detail-label">Enrollment</p>
+                                    <p class="detail-value">{{ student.enrollment_date }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements & Certificates Section (now first) -->
+                <div class="card">
+                    <h3>🏆 Achievements & Certificates</h3>
+                    
+                    {% if achievements %}
+                        <div class="achievements-list">
+                            {% for achievement in achievements %}
+                                    <div class="achievement-header">
+                                        <div>
+                                            <h4>{{ achievement.title }}</h4>
+                                            <p class="achievement-date">📅 {{ achievement.date }}</p>
+                                        </div>
+                                        <div class="achievement-badges">
+                                            <span class="badge badge-primary">{{ achievement.category }}</span>
+                                            <span class="badge badge-info">{{ achievement.level }}</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="achievement-description">{{ achievement.description }}</p>
+
+                                    {% if achievement.certificate_file %}
+                                        <div class="achievement-file">
+                                            <a href="{{ url_for('download_file', filename=achievement.certificate_file) }}" class="btn btn-small btn-info">
+                                                📥 Download Certificate
+                                            </a>
+                                        </div>
+                                    {% endif %}
+
+                                    <!-- Mentor Remarks Section -->
+                                    <div class="mentor-remarks-section">
+                                        <h5>Mentor Remarks & Guidance</h5>
+                                        
+                                        {% if achievement.get('mentor_remarks') %}
+                                            <div class="existing-remarks">
+                                                {% for remark in achievement.mentor_remarks %}
+                                                    <div class="remark-item">
+                                                        <p><strong>{{ remark.mentor_name }}</strong> <small>({{ remark.timestamp }})</small></p>
+                                                        <p class="remark-text">{{ remark.remark }}</p>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <p class="no-remarks">No remarks yet. Add guidance here.</p>
+                                        {% endif %}
+
+                                        <!-- Add Remark Form -->
+                                        <form class="add-remark-form" data-achievement-id="{{ achievement.achievement_id }}">
+                                            <div class="form-field">
+                                                <textarea name="remark" placeholder="Add your guidance, feedback, or remarks..." rows="2" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-small btn-success">Add Remarks</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <p>No achievements uploaded yet by this student.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Academic Details Section (now second) -->
+                <div class="card">
+                    <h3>📚 Academic Details (Semester-wise)</h3>
+                    {% if student.academic_details and student.academic_details|length > 0 %}
+                        <div class="academic-details-list">
+                            {% for detail in student.academic_details %}
+                                <div class="academic-detail-item">
+                                    <div class="semester-header">
+                                        <h4>Semester {{ detail.semester }}</h4>
+                                        {% if detail.cgpa %}
+                                            <span class="cgpa-badge">CGPA: {{ detail.cgpa }}</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if detail.highlights %}
+                                        <p class="highlights"><strong>Highlights:</strong> {{ detail.highlights }}</p>
+                                    {% endif %}
+                                    {% if detail.subjects and detail.subjects|length > 0 %}
+                                        <div class="subjects-list">
+                                            <h5>📖 Subjects & Marks</h5>
+                                            <div class="subjects-grid">
+                                                {% for subj in detail.subjects %}
+                                                    <div class="subject-item">
+                                                        <span class="subject-name">{{ subj.name }}</span>
+                                                        <span class="subject-marks">{{ subj.marks }}</span>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <p>No academic details added yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Mentoring Notes -->
+                <div class="card">
+                    <h3>Mentoring Summary</h3>
+                    <div class="mentoring-summary">
+                        <p>
+                            This portal helps you guide {{ student.name }} on their academic and professional growth journey. 
+                            Your remarks provide valuable feedback and mentorship without formal approvals or evaluations.
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <strong>Focus Areas:</strong> Guidance, Support, Encouragement, Professional Development
+                        </p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        // Handle remark submission
+        document.querySelectorAll('.add-remark-form').forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const achievementId = this.dataset.achievementId;
+                const remark = this.querySelector('textarea').value;
+
+                const formData = new FormData();
+                formData.append('achievement_id', achievementId);
+                formData.append('remark', remark);
+
+                try {
+                    const response = await fetch('{{ url_for("add_mentor_remark") }}', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        alert('Remarks added successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>

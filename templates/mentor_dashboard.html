@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Dashboard - VCET Student Growth Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="https://vcet.edu.in/wp-content/uploads/2021/10/WhatsApp-Image-2024-10-21-at-9.32.04-AM.jpeg" alt="VCET Logo" class="header-logo">
+                <div class="header-title">
+                    <h1>VCET Student Growth Portal</h1>
+                    <p>Vidyavardhini's College | Faculty & Student Portal</p>
+                </div>
+            </div>
+            <div class="header-user">
+                <span>Welcome, <strong>{{ session.name }}</strong></span>
+                <button id="sidebarToggle" class="sidebar-toggle">☰</button>
+                <a href="{{ url_for('logout') }}" class="btn btn-small btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="dashboard">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <div class="sidebar-profile">
+                    <div class="avatar">{{ session.name[0] }}</div>
+                    <h3>{{ mentor.name }}</h3>
+                    <p class="email">{{ mentor.email }}</p>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <button class="menu-item active" data-section="home">
+                        <span class="icon">🏠</span> Home
+                    </button>
+                    <button class="menu-item" data-section="students">
+                        <span class="icon">👥</span> My Students
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dashboard-main">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- HOME SECTION -->
+                <section id="home" class="content-section active">
+                    <div class="page-header">
+                        <h2>Welcome, {{ mentor.name }}!</h2>
+                        <p>Faculty Dashboard</p>
+                    </div>
+
+                    <div class="home-stats">
+                        <div class="stat-card">
+                            <span class="stat-number">{{ students|length }}</span>
+                            <span class="stat-label">Total Students</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>ℹ️ Your Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Email</label>
+                                <p>{{ mentor.email }}</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Department</label>
+                                <p>{{ mentor.department }}</p>
+                            </div>
+                            {% if mentor.mobile %}
+                            <div class="info-item">
+                                <label>Mobile</label>
+                                <p>📱 {{ mentor.mobile }}</p>
+                            </div>
+                            {% endif %}
+                            {% if mentor.college_name %}
+                            <div class="info-item">
+                                <label>College</label>
+                                <p>{{ mentor.college_name }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+
+                <!-- STUDENTS SECTION -->
+                <section id="students" class="content-section">
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% if students %}
+                    <div class="students-grid">
+                        {% for student in students %}
+                            <div class="student-card">
+                                <div class="student-card-header">
+                                    {% if student.profile_pic %}
+                                        <img src="{{ url_for('download_file', filename=student.profile_pic) }}" alt="{{ student.name }}" class="student-avatar">
+                                    {% else %}
+                                        <div class="student-avatar">{{ student.name[0] }}</div>
+                                    {% endif %}
+                                    <div class="student-info">
+                                        <h3>{{ student.name }}</h3>
+                                        <p>{{ student.email }}</p>
+                                    </div>
+                                </div>
+                                <div class="student-card-body">
+                                    <p><strong>ID:</strong> {{ student.student_id }}</p>
+                                    {% if student.profile_pic %}
+                                        <img src="{{ url_for('download_file', filename=student.profile_pic) }}" alt="{{ student.name }}" class="student-avatar-img">
+                                    {% endif %}
+                                    {% if student.mobile %}
+                                        <p><strong>📱 Mobile:</strong> <a href="tel:{{ student.mobile }}">{{ student.mobile }}</a></p>
+                                    {% endif %}
+                                    {% if student.college_name %}
+                                        <p><strong>📚 College:</strong> {{ student.college_name }}</p>
+                                    {% endif %}
+                                    {% if student.semester %}
+                                        <p><strong>📖 Semester:</strong> {{ student.semester }}</p>
+                                    {% endif %}
+                                    {% if student.branch %}
+                                        <p><strong>🎓 Branch:</strong> {{ student.branch }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="student-card-footer">
+                                    <a href="{{ url_for('mentor_view_student', student_id=student.student_id) }}" class="btn btn-primary btn-block">
+                                        View Profile & Achievements
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <p>No students assigned to you yet.</p>
+                    </div>
+                {% endif %}
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        // Menu Navigation (mentor)
+        document.querySelectorAll('.sidebar-menu .menu-item').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                const sectionId = this.getAttribute('data-section');
+                const target = document.getElementById(sectionId);
+                if (target) target.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

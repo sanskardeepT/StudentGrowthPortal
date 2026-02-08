@@ -1,0 +1,52 @@
+[
+  {
+    "mentor_id": "M001",
+    "name": "Dr. Rajesh Kumar",
+    "email": "rajesh.kumar@vcet.edu.in",
+    "mobile": "+91-9876543210",
+    "department": "CSE-DS",
+    "profile_pic": ""
+    ,"university": "SPPU",
+    "college_name": "Vidyavardhini's College of Engineering & Technology"
+  },
+  {
+    "mentor_id": "M002",
+    "name": "Dr. Priya Sharma",
+    "email": "priya.sharma@vcet.edu.in",
+    "mobile": "+91-9876543211",
+    "department": "CSE-DS",
+    "profile_pic": ""
+    ,"university": "SPPU",
+    "college_name": "Vidyavardhini's College of Engineering & Technology"
+  },
+  {
+    "mentor_id": "M003",
+    "name": "Dr. Arjun Patel",
+    "email": "arjun.patel@vcet.edu.in",
+    "mobile": "+91-9876543212",
+    "department": "CSE-DS",
+    "profile_pic": ""
+    ,"university": "SPPU",
+    "college_name": "Vidyavardhini's College of Engineering & Technology"
+  },
+  {
+    "mentor_id": "M004",
+    "name": "Dr. Sneha Verma",
+    "email": "sneha.verma@vcet.edu.in",
+    "mobile": "+91-9876543213",
+    "department": "CSE-DS",
+    "profile_pic": ""
+    ,"university": "SPPU",
+    "college_name": "Vidyavardhini's College of Engineering & Technology"
+  },
+  {
+    "mentor_id": "M005",
+    "name": "Dr. Vikram Singh",
+    "email": "vikram.singh@vcet.edu.in",
+    "mobile": "+91-9876543214",
+    "department": "CSE-DS",
+    "profile_pic": ""
+    ,"university": "SPPU",
+    "college_name": "Vidyavardhini's College of Engineering & Technology"
+  }
+]

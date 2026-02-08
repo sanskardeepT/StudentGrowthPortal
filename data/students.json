@@ -1,0 +1,102 @@
+[
+  {
+    "student_id": "CSEDS-SE(1)-(001)",
+    "name": "Amit Tiwari",
+    "email": "amit.tiwari@vcet.ac.in",
+    "password": "hashed_password_1",
+    "mobile": "+91-9876543220",
+    "department": "CSE-DS",
+    "mentor_id": "M001",
+    "profile_pic": "",
+    "university": "University of Mumbai",
+    "college_name": "Vidyavardhini's College of Engineering & Technology",
+    "branch": "Computer Science & Engineering",
+    "semester": "5",
+    "batch": "2022",
+    "enrollment_date": "2022-06-15",
+    "academic_details": []
+  },
+  {
+    "student_id": "CSEDS-SE(2)-(002)",
+    "name": "Neha Gupta",
+    "email": "neha.gupta@vcet.ac.in",
+    "password": "hashed_password_2",
+    "mobile": "+91-9876543221",
+    "department": "CSE-DS",
+    "mentor_id": "M002",
+    "profile_pic": "",
+    "university": "University of Mumbai",
+    "college_name": "Vidyavardhini's College of Engineering & Technology",
+    "branch": "Computer Science & Engineering",
+    "semester": "5",
+    "batch": "2022",
+    "enrollment_date": "2022-06-15",
+    "academic_details": []
+  },
+  {
+    "student_id": "CSEDS-SE(3)-(003)",
+    "name": "Rohit Desai",
+    "email": "rohit.desai@vcet.ac.in",
+    "password": "hashed_password_3",
+    "mobile": "+91-9876543222",
+    "department": "CSE-DS",
+    "mentor_id": "M003",
+    "profile_pic": "",
+    "university": "University of Mumbai",
+    "college_name": "Vidyavardhini's College of Engineering & Technology",
+    "branch": "Computer Science & Engineering",
+    "semester": "5",
+    "batch": "2022",
+    "enrollment_date": "2022-06-15",
+    "academic_details": []
+  },
+  {
+    "student_id": "CSEDS-SE(1)-(004)",
+    "name": "asdfghjkl",
+    "email": "asdfghjkl@vcet.edu.in",
+    "password": "pbkdf2:sha256:600000$hHSZcdSlFiYhFKXd$c4d177e65346663bdcc6e259dd2ae6193ef883590048c1e77e9a7317410ad654",
+    "mobile": "+91-9876543223",
+    "department": "CSE-DS",
+    "mentor_id": "M001",
+    "profile_pic": "",
+    "university": "University of Mumbai",
+    "college_name": "Vidyavardhini's College of Engineering & Technology",
+    "branch": "Computer Science & Engineering",
+    "semester": "5",
+    "batch": "2022",
+    "enrollment_date": "2022-06-15",
+    "academic_details": [
+      {
+        "semester": "1",
+        "cgpa": "",
+        "highlights": "",
+        "subjects": [
+          {
+            "name": "math",
+            "marks": "50"
+          },
+          {
+            "name": "dsa",
+            "marks": "60"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "student_id": "CSEDS-SE(2)-(005)",
+    "name": "sanskardeep",
+    "email": "sanskardeep@vcet.edu.in",
+    "password": "pbkdf2:sha256:600000$n4PIi6Nav28xsnyK$95d4e66b1b7ef711507e6a0319a364a4f4743b857e5649f4890d748b2977130a",
+    "department": "CSE-DS",
+    "mentor_id": "M001",
+    "mobile": "9403910943",
+    "profile_pic": "",
+    "university": "University of Mumbai",
+    "college_name": "Vidyavardhini's College of Engineering & Technology",
+    "branch": "Computer Science & Engineering",
+    "semester": "5",
+    "enrollment_date": "2026-02-08",
+    "academic_details": []
+  }
+]

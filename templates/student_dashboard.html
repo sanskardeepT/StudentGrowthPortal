@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VCET Student Growth Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="https://vcet.edu.in/wp-content/uploads/2021/10/WhatsApp-Image-2024-10-21-at-9.32.04-AM.jpeg" alt="VCET Logo" class="header-logo">
+                <div class="header-title">
+                    <h1>VCET Student Growth Portal</h1>
+                    <p>Vidyavardhini's College | Faculty & Student Portal</p>
+                </div>
+            </div>
+            <div class="header-user">
+                <span>Welcome, <strong>{{ session.name }}</strong></span>
+                <button id="sidebarToggle" class="sidebar-toggle">☰</button>
+                <a href="{{ url_for('logout') }}" class="btn btn-small btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="dashboard">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <div class="sidebar-profile">
+                    <div class="avatar">{{ session.name[0] }}</div>
+                    <h3>{{ student.name }}</h3>
+                    <p class="email">{{ student.email }}</p>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <button class="menu-item" data-section="home">
+                        <span class="icon">🏠</span> Home
+                    </button>
+                    <button class="menu-item" data-section="profile">
+                        <span class="icon">👤</span> Edit Profile
+                    </button>
+                    <button class="menu-item" data-section="academic">
+                        <span class="icon">📚</span> Academic Details
+                    </button>
+                    <button class="menu-item active" data-section="achievements">
+                        <span class="icon">🏆</span> Achievements
+                    </button>
+                    <button class="menu-item" data-section="upload">
+                        <span class="icon">📤</span> Upload Achievement
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dashboard-main">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- HOME SECTION -->
+                <section id="home" class="content-section active">
+                    <div class="page-header">
+                        <h2>Welcome, {{ student.name }}!</h2>
+                        <p>Your Student Growth Portal Dashboard</p>
+                    </div>
+
+                    <div class="home-stats">
+                        <div class="stat-card">
+                            <span class="stat-number">{{ achievements|length }}</span>
+                            <span class="stat-label">Total Achievements</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">{{ student.semester if student.semester else 'N/A' }}</span>
+                            <span class="stat-label">Current Semester</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>👨‍🏫 Your Mentor</h3>
+                        <div class="mentor-card">
+                            <div class="mentor-details">
+                                <h4>{{ mentor.name }}</h4>
+                                <p>{{ mentor.email }}</p>
+                                {% if mentor.mobile %}
+                                    <p>📱 <a href="tel:{{ mentor.mobile }}">{{ mentor.mobile }}</a></p>
+                                {% endif %}
+                                <p class="meta">Department: {{ mentor.department }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>ℹ️ Your Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Student ID</label>
+                                <p>{{ student.student_id }}</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Department</label>
+                                <p>{{ student.department }}</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Email</label>
+                                <p>{{ student.email }}</p>
+                            </div>
+                            {% if student.mobile %}
+                            <div class="info-item">
+                                <label>Mobile</label>
+                                <p>{{ student.mobile }}</p>
+                            </div>
+                            {% endif %}
+                            {% if student.semester %}
+                            <div class="info-item">
+                                <label>Current Semester</label>
+                                <p>{{ student.semester }}</p>
+                            </div>
+                            {% endif %}
+                            {% if student.college_name %}
+                            <div class="info-item">
+                                <label>College</label>
+                                <p>{{ student.college_name }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PROFILE SECTION -->
+                <section id="profile" class="content-section">
+                    <div class="page-header">
+                        <h2>Edit Profile</h2>
+                        <p>Update your contact information and profile picture</p>
+                    </div>
+                    <div class="card">
+                        <h3>Update Your Information</h3>
+                        <form id="profileForm" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="mobile">Mobile Number</label>
+                                    <input type="tel" id="mobile" name="mobile" value="{{ student.mobile or '' }}" pattern="^\+?91[-\s]?[0-9]{10}$" title="Enter a valid Indian mobile number">
+                                </div>
+                                <div class="form-field">
+                                    <label for="profile_pic">Profile Picture</label>
+                                    <input type="file" id="profile_pic" name="profile_pic" accept="image/jpeg,image/jpg,image/png,image/gif">
+                                    <small>Formats: JPG, JPEG, PNG, GIF (Max 5MB)</small>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ACADEMIC SECTION -->
+                <section id="academic" class="content-section">
+                    <div class="page-header">
+                        <h2>Academic Details</h2>
+                        <p>Track your semester-wise academic performance</p>
+                    </div>
+                    <div class="card">
+                        <h3>Semester-wise Academic Performance</h3>
+                        <form id="academicDetailsForm">
+                            <div id="academicList">
+                                {% if student.academic_details and student.academic_details|length > 0 %}
+                                    {% for detail in student.academic_details %}
+                                        <div class="academic-entry">
+                                            <div class="form-row">
+                                                <div class="form-field">
+                                                    <label>Semester</label>
+                                                    <input type="text" class="semester" value="{{ detail.semester }}" placeholder="e.g., Sem 1, Sem 2">
+                                                </div>
+                                                <div class="form-field">
+                                                    <label>CGPA / GPA</label>
+                                                    <input type="number" class="cgpa" value="{{ detail.cgpa }}" step="0.01" min="0" max="10" placeholder="e.g., 8.5">
+                                                </div>
+                                                <div class="form-field">
+                                                    <label>Notes / Highlights</label>
+                                                    <input type="text" class="highlights" value="{{ detail.highlights }}" placeholder="Key subjects or achievements">
+                                                </div>
+                                                <button type="button" class="btn btn-small btn-danger remove-academic">Remove Semester</button>
+                                            </div>
+
+                                            <div class="subjects-list">
+                                                <label>Subjects & Marks</label>
+                                                {% if detail.subjects and detail.subjects|length > 0 %}
+                                                    {% for subj in detail.subjects %}
+                                                        <div class="subject-row">
+                                                            <input type="text" class="subject-name" value="{{ subj.name }}" placeholder="Subject name">
+                                                            <input type="number" class="subject-marks" value="{{ subj.marks }}" placeholder="Marks" step="0.01" min="0">
+                                                            <button type="button" class="btn btn-small btn-danger remove-subject">Remove</button>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <div class="subject-row">
+                                                        <input type="text" class="subject-name" placeholder="Subject name">
+                                                        <input type="number" class="subject-marks" placeholder="Marks" step="0.01" min="0">
+                                                        <button type="button" class="btn btn-small btn-danger remove-subject">Remove</button>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div style="margin-top:8px;">
+                                                <button type="button" class="btn btn-small btn-info add-subject">+ Add Subject</button>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <button type="button" class="btn btn-small btn-info" id="addAcademic">+ Add Semester Details</button>
+                            <button type="submit" class="btn btn-primary">Save Academic Details</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- UPLOAD SECTION -->
+                <section id="upload" class="content-section">
+                    <div class="page-header">
+                        <h2>Upload Achievement</h2>
+                        <p>Record your academic and professional achievements</p>
+                    </div>
+                    <div class="card">
+                        <h3>Submit New Achievement</h3>
+                        <form id="achievementForm" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="title">Achievement Title *</label>
+                                    <input type="text" id="title" name="title" required placeholder="e.g., ML Hackathon Winner">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="category">Category *</label>
+                                    <select id="category" name="category" required>
+                                        <option value="">-- Select Category --</option>
+                                        <option value="Hackathon">Hackathon</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Sports">Sports</option>
+                                        <option value="Cultural">Cultural</option>
+                                        <option value="Internship">Internship</option>
+                                        <option value="Certification">Certification</option>
+                                        <option value="Competition">Competition</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="level">Level *</label>
+                                    <select id="level" name="level" required>
+                                        <option value="">-- Select Level --</option>
+                                        <option value="College">College</option>
+                                        <option value="State">State</option>
+                                        <option value="National">National</option>
+                                        <option value="International">International</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="date">Date *</label>
+                                    <input type="date" id="date" name="date" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="description">Description *</label>
+                                    <textarea id="description" name="description" required rows="3" placeholder="Describe your achievement..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="certificate">Certificate / Proof (PDF, JPG, PNG) - Max 10MB</label>
+                                    <input type="file" id="certificate" name="certificate" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Upload Achievement</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ACHIEVEMENTS LIST SECTION -->
+                <section id="achievements" class="content-section active">
+                    <div class="page-header">
+                        <h2>My Achievements</h2>
+                        <p>Your uploaded achievements and certificates</p>
+                    </div>
+                    <div class="card">
+                        <h3>Your Uploaded Achievements</h3>
+                        
+                        {% if achievements %}
+                            <div class="achievements-list">
+                                {% for achievement in achievements %}
+                                    <div class="achievement-item">
+                                        <div class="achievement-header">
+                                            <h4>{{ achievement.title }}</h4>
+                                            <div class="achievement-badges">
+                                                <span class="badge badge-primary">{{ achievement.category }}</span>
+                                                <span class="badge badge-info">{{ achievement.level }}</span>
+                                            </div>
+                                        </div>
+                                        <p class="achievement-date">📅 {{ achievement.date }}</p>
+                                        <p class="achievement-description">{{ achievement.description }}</p>
+                                        
+                                        {% if achievement.certificate_file %}
+                                            <div class="achievement-actions">
+                                                <a href="{{ url_for('download_file', filename=achievement.certificate_file) }}" class="btn btn-small btn-info">
+                                                    📥 Download Certificate
+                                                </a>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if achievement.get('mentor_remarks') %}
+                                            <div class="mentor-remarks">
+                                                <h5>💬 Mentor Remarks:</h5>
+                                                {% for remark in achievement.mentor_remarks %}
+                                                    <div class="remark-item">
+                                                        <p><strong>{{ remark.mentor_name }}:</strong></p>
+                                                        <p>{{ remark.remark }}</p>
+                                                        <small>{{ remark.timestamp }}</small>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+
+                                        <button class="btn btn-small btn-danger delete-achievement" data-achievement-id="{{ achievement.achievement_id }}">
+                                            🗑️ Delete
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <p>No achievements uploaded yet. Start recording your growth!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        // Menu Navigation
+        document.querySelectorAll('.sidebar-menu .menu-item').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all menu items
+                document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show the selected section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+
+
+        // Handle profile update
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('{{ url_for("update_profile") }}', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Profile updated successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Handle academic details (multiple subjects + marks)
+        document.getElementById('addAcademic').addEventListener('click', function() {
+            const html = `
+                <div class="academic-entry">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Semester</label>
+                            <input type="text" class="semester" placeholder="e.g., Sem 1, Sem 2">
+                        </div>
+                        <div class="form-field">
+                            <label>CGPA / GPA</label>
+                            <input type="number" class="cgpa" step="0.01" min="0" max="10" placeholder="e.g., 8.5">
+                        </div>
+                        <div class="form-field">
+                            <label>Notes / Highlights</label>
+                            <input type="text" class="highlights" placeholder="Key notes or achievements">
+                        </div>
+                        <button type="button" class="btn btn-small btn-danger remove-academic">Remove Semester</button>
+                    </div>
+
+                    <div class="subjects-list">
+                        <label>Subjects & Marks</label>
+                        <div class="subject-row">
+                            <input type="text" class="subject-name" placeholder="Subject name">
+                            <input type="number" class="subject-marks" placeholder="Marks" step="0.01" min="0">
+                            <button type="button" class="btn btn-small btn-danger remove-subject">Remove</button>
+                        </div>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <button type="button" class="btn btn-small btn-info add-subject">+ Add Subject</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('academicList').insertAdjacentHTML('beforeend', html);
+            attachAcademicHandlers();
+        });
+
+        function attachAcademicHandlers() {
+            // remove semester
+            document.querySelectorAll('.remove-academic').forEach(btn => {
+                btn.onclick = function() {
+                    this.closest('.academic-entry').remove();
+                };
+            });
+
+            // add subject within an academic entry
+            document.querySelectorAll('.add-subject').forEach(btn => {
+                btn.onclick = function() {
+                    const entry = this.closest('.academic-entry');
+                    const subjectsList = entry.querySelector('.subjects-list');
+                    const row = document.createElement('div');
+                    row.className = 'subject-row';
+                    row.innerHTML = `
+                        <input type="text" class="subject-name" placeholder="Subject name">
+                        <input type="number" class="subject-marks" placeholder="Marks" step="0.01" min="0">
+                        <button type="button" class="btn btn-small btn-danger remove-subject">Remove</button>
+                    `;
+                    subjectsList.appendChild(row);
+                    attachSubjectRemoveHandlers();
+                };
+            });
+
+            attachSubjectRemoveHandlers();
+        }
+
+        function attachSubjectRemoveHandlers() {
+            document.querySelectorAll('.remove-subject').forEach(btn => {
+                btn.onclick = function() {
+                    this.closest('.subject-row').remove();
+                };
+            });
+        }
+
+        // Initialize handlers for existing entries
+        attachAcademicHandlers();
+
+        document.getElementById('academicDetailsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const details = [];
+            document.querySelectorAll('.academic-entry').forEach(entry => {
+                const semester = (entry.querySelector('.semester') || {}).value || '';
+                const cgpa = (entry.querySelector('.cgpa') || {}).value || '';
+                const highlights = (entry.querySelector('.highlights') || {}).value || '';
+
+                const subjects = [];
+                entry.querySelectorAll('.subject-row').forEach(srow => {
+                    const name = (srow.querySelector('.subject-name') || {}).value || '';
+                    const marks = (srow.querySelector('.subject-marks') || {}).value || '';
+                    if (name || marks) {
+                        subjects.push({ name: name, marks: marks });
+                    }
+                });
+
+                if (semester || cgpa || highlights || subjects.length > 0) {
+                    details.push({
+                        semester: semester,
+                        cgpa: cgpa,
+                        highlights: highlights,
+                        subjects: subjects
+                    });
+                }
+            });
+
+            try {
+                const response = await fetch('{{ url_for("update_academic_details") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ academic_details: details })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Academic details saved successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Handle achievement upload
+        document.getElementById('achievementForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('{{ url_for("upload_achievement") }}', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Achievement uploaded successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Handle achievement deletion
+        document.querySelectorAll('.delete-achievement').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                if (!confirm('Are you sure you want to delete this achievement?')) return;
+
+                const achievementId = this.dataset.achievementId;
+
+                try {
+                    const response = await fetch(`/student/achievement/${achievementId}/delete`, {
+                        method: 'POST'
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        alert('Achievement deleted successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

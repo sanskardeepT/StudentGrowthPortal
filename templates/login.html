@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VCET Student Growth Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="https://vcet.edu.in/wp-content/uploads/2021/10/WhatsApp-Image-2024-10-21-at-9.32.04-AM.jpeg" alt="VCET Logo" class="auth-logo">
+                <h1>VCET Student Growth Portal</h1>
+                <p class="subtitle">Student Growth Portal</p>
+                <div class="college-info">
+                    <strong>Vidyavardhini's College Of Engineering & Technology</strong>
+                    <div class="hindi">विद्यावर्धिनीचे अभियांत्रिकी आणि तंत्रज्ञान महाविद्यालय</div>
+                    <div class="accreditation">Vasai Road | Approved by AICTE, DTE Maharashtra | Affiliated to University of Mumbai | NBA & NAAC Accredited</div>
+                </div>
+            </div>
+
+            <h2>Login</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="form-group">
+                <div class="form-field">
+                    <label for="user_type">Login As *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="user_type" value="student" checked>
+                            <span>Student</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="user_type" value="mentor">
+                            <span>Mentor (Faculty)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+
+                <div class="form-field" id="password-field">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>New student? <a href="{{ url_for('register') }}">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password field visibility for mentors
+        const userTypeRadios = document.querySelectorAll('input[name="user_type"]');
+        const passwordField = document.getElementById('password-field');
+        const passwordInput = document.getElementById('password');
+
+        userTypeRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'mentor') {
+                    passwordField.style.display = 'none';
+                    passwordInput.removeAttribute('required');
+                } else {
+                    passwordField.style.display = 'block';
+                    passwordInput.setAttribute('required', 'required');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
