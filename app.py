@@ -523,6 +523,8 @@ def server_error(error):
     flash('An error occurred. Please try again', 'danger')
     return redirect(url_for('index'))
 
+# Initialize on startup
+create_upload_folder()
+
 if __name__ == '__main__':
-    create_upload_folder()
     app.run(debug=True, host='0.0.0.0', port=5000)
